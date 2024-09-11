@@ -1,0 +1,42 @@
+# 忽略所有 .idea 文件夹
+.idea/
+ 
+# 忽略所有 .vscode 文件夹
+.vscode/
+ 
+# 忽略所有 .txt 文件
+*.txt
+ 
+# 忽略所有 .log 文件
+*.log
+ 
+# 忽略所有 .lock 文件
+*.lock
+ 
+# 忽略所有 .db 文件
+*.db
+ 
+# 忽略所有 .tmp 文件
+*.tmp
+ 
+# 忽略所有 .cache 文件夹
+.cache/
+ 
+# 忽略所有 .project 文件
+*.project
+ 
+# 忽略所有 .classpath 文件
+*.classpath
+ 
+# 忽略所有 .settings 文件夹
+.settings/
+ 
+# 忽略所有 .gitignore 文件
+.idea/
+/idea/
+.vscode/
+/unpackage/
+.hbuilderx/launch.json
+unpackage/
+
+
