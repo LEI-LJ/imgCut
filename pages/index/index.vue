@@ -55,58 +55,35 @@
 				return `width:${this.size.width}px;height:${this.size.height}px;`;
 			},
 		},
-		watch: {
-			bgImage() {
-				this.handleCanvasImg();
-
-			},
-		},
+		watch: {},
 		methods: {
-			handleExport() {
-
-			},
-			handleSave() {
-
-			},
-			//  绘制图片
-			drawOperatingLine() {
-				this.myCanvasContext.beginPath();
-				this.myCanvasContext.moveTo(100, 50);
-				this.myCanvasContext.lineTo(150, 100);
-				this.myCanvasContext.lineTo(100, 150);
-				this.myCanvasContext.lineWidth = "2"; //默认是1
-				this.myCanvasContext.strokeStyle = "blue";
-				this.myCanvasContext.closePath(); //将折线闭合 
+			handleOperatingLine() {
+				// 先清除 内容
+				this.myCanvasContext.clearRect(0, 0, orgSize.width, orgSize.height)
+				this.myCanvasContext.fillStyle = 'rgba(0,0,0,0.4)';
+				this.myCanvasContext.fillRect(0, 0, orgSize.width, this.initY);
+				this.myCanvasContext.fillRect(0, this.endY, orgSize.width, orgSize.height - this.initY);
+				this.myCanvasContext.fillRect(0, this.initY, this.initX, this.endY - this.initY);
+				this.myCanvasContext.fillRect(this.endX, this.initY, orgSize.width - this.endX, this.endY - this.initY);
+				this.myCanvasContext.restore()
+				// 边缘线
+				this.myCanvasContext.save()
+				this.myCanvasContext.strokeStyle = 'red';
+				this.myCanvasContext.setLineDash([5, 5])
+				this.myCanvasContext.moveTo(this.initX, this.initY);
+				this.myCanvasContext.lineTo(this.endX, this.initY);
+				this.myCanvasContext.lineTo(this.endX, this.endY);
+				this.myCanvasContext.lineTo(this.initX, this.endY);
+				this.myCanvasContext.closePath();
 				this.myCanvasContext.stroke();
-
+				// 矩形四周点
+				this.myCanvasContext.fillStyle = '#fff';
+				this.myCanvasContext.fillRect(this.initX - 5, this.initY - 5, 10, 10);
+				this.myCanvasContext.fillRect(this.endX - 5, this.initY - 5, 10, 10);
+				this.myCanvasContext.fillRect(this.endX - 5, this.endY - 5, 10, 10);
+				this.myCanvasContext.fillRect(this.initX - 5, this.endY - 5, 10, 10);
 				this.myCanvasContext.beginPath();
-				this.myCanvasContext.moveTo(200, 50);
-				this.myCanvasContext.lineTo(250, 100);
-				this.myCanvasContext.lineTo(150, 150);
-				this.myCanvasContext.lineWidth = "2";
-				this.myCanvasContext.fillStyle = "red";
-				this.myCanvasContext.closePath(); //将折线闭合 
-				this.myCanvasContext.fill();
-				//stroke只画边，与strokeStyle配套使用，fill将整个图形填充，与fillStyle配套使用
-			},
-			handleCanvasImg() {
-				this.myCanvasContext = uni.createCanvasContext('defCanvas', this);
-				this.myCanvasContext.beginPath();
-				this.myCanvasContext.moveTo(20, 20);
-				this.myCanvasContext.lineTo(20, 20);
-				this.myCanvasContext.lineTo(100, 150);
-				this.myCanvasContext.lineWidth = "2"; //默认是1
-				this.myCanvasContext.strokeStyle = "blue";
-				this.myCanvasContext.closePath(); //将折线闭合 
-				this.myCanvasContext.stroke();
-				this.myCanvasContext.beginPath();
-				this.myCanvasContext.moveTo(200, 50);
-				this.myCanvasContext.lineTo(250, 100);
-				this.myCanvasContext.lineTo(150, 150);
-				this.myCanvasContext.lineWidth = "2";
-				this.myCanvasContext.fillStyle = "red";
-				this.myCanvasContext.closePath(); //将折线闭合 
-				this.myCanvasContext.fill();
+				this.myCanvasContext.restore()
 			},
 			handleQuShuiYing(fn) {
 				let _this = this;
@@ -157,8 +134,7 @@
 			penStart(e) {
 				const _this = this;
 				this.beforePenStart(() => {
-
-
+					this.handleOperatingLine();
 				}, e);
 			},
 			penMove(e) {

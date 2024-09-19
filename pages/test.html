@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="800" height="600"></canvas>
+		<script>
+			const canvas = document.getElementById('myCanvas');
+			const ctx = canvas.getContext('2d');
+
+			
+			class NewCanvas {
+				constructor() {
+					this.rect = {
+						x: 100,
+						y: 100,
+						width: 200,
+						height: 100,
+						dragging: false,
+						resizing: false
+					}
+					this.startX = null
+					this.startY = null
+					this.init()
+				}
+				init() {
+					// 鼠标按下事件
+					canvas.onmousedown = (e) => {
+						const mouseX = e.offsetX;
+						const mouseY = e.offsetY;
+						if (this.isMouseOnRectEdge(mouseX, mouseY)) {
+							this.rect.resizing = true;
+						} else if (this.isMouseInRect(mouseX, mouseY)) {
+							this.rect.dragging = true;
+							this.startX = mouseX - this.rect.x;
+							this.startY = mouseY - this.rect.y;
+						}
+					};
+					// 鼠标移动事件
+					canvas.onmousemove = (e) => {
+						const mouseX = e.offsetX;
+						const mouseY = e.offsetY;
+						if (this.rect.dragging) {
+							this.rect.x = mouseX - this.startX;
+							this.rect.y = mouseY - this.startY;
+						} else if (this.rect.resizing) {
+							this.rect.width = mouseX - rect.x;
+							this.rect.height = mouseY - rect.y;
+						}
+						this.draw();
+					};
+
+					// 鼠标抬起事件
+					canvas.onmouseup = () => {
+						this.rect.dragging = false;
+						this.rect.resizing = false;
+					};
+					this.draw();
+				}
+
+				draw() {
+					this.drawBackground();
+					this.drawRect();
+				}
+				drawBackground() {
+					ctx.clearRect(0, 0, canvas.width, canvas.height); // 清除画布
+					const img = new Image()
+					img.src = './cat.jpg'
+					img.onload = () => {
+						ctx.drawImage(img,0,0)
+						ctx.save()
+					}
+					ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'; // 黑色半透明
+					ctx.fillRect(0, 0, canvas.width, canvas.height); // 绘制背景
+				}
+
+				isMouseOnRectEdge(mouseX, mouseY) {
+					const edgeThreshold = 10; // 边缘敏感区
+					return (
+						mouseX > this.rect.x + this.rect.width - edgeThreshold &&
+						mouseX < this.rect.x + this.rect.width + edgeThreshold &&
+						mouseY > this.rect.y + this.rect.height - edgeThreshold &&
+						mouseY < this.rect.y + this.rect.height + edgeThreshold
+					);
+				}
+				isMouseInRect(mouseX, mouseY) {
+					return (
+						mouseX > this.rect.x &&
+						mouseX < this.rect.x + this.rect.width &&
+						mouseY > this.rect.y &&
+						mouseY < this.rect.y + this.rect.height
+					);
+				}
+				drawRect() {
+					ctx.strokeStyle = 'white'; // 矩形的边框颜色
+					ctx.lineWidth = 2;
+					ctx.clearRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height); // 透明内容
+					ctx.strokeRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height); // 绘制矩形边框
+				}
+			}
+			new NewCanvas()
+		</script>
+	</body>
+</html>

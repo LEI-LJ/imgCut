@@ -44,7 +44,6 @@
     <div>
       <h1>图像剪辑</h1>
       <input type="file" name="file" id="file">
-
     </div>
     <div class="box-content">
       <canvas id="origin" width="500" height="500">
@@ -161,7 +160,6 @@
             endX = e.offsetX
             initY = e.offsetY
             break
-
           case 8: //  左下角
             initX = e.offsetX
             endY = e.offsetY
@@ -184,7 +182,6 @@
 
         }
         //  更新
-
         drawOperatingLine()
       }
     })
@@ -203,7 +200,6 @@
       reader.onload = (e) => {
         img.src = e.target.result;
         img.onload = () => {
-          console.log(img.width, img.height);
           //  更新图片缩放比例
           if (img.width > img.height) {
             scale = 500 / img.width
